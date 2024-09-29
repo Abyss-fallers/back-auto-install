@@ -1,0 +1,17 @@
+{
+	"name": "my-cli-tool",
+	"version": "1.0.0",
+	"main": "setup.js",
+	"type": "module",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"fs": "^0.0.1-security",
+		"inquirer": "^9.1.0"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": ""
+}
