@@ -4,7 +4,7 @@
 
 ## 2. Добавить остальные зависимости
 
-- `Regis`
+- `Redis`
 - `Winston`
 - `helmet.config.js`
 - `cors.config.js`
