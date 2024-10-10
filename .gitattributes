@@ -1,0 +1,16 @@
+* text=auto
+
+*.js text
+*.ts text
+
+*.md text
+
+*.json text
+
+*.yml text
+*.yaml text
+*.toml text
+
+Dockerfile text
+
+*.sh text

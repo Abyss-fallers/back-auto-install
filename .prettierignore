@@ -1,4 +1,4 @@
-export const prettierIgnoreContent = `# Ignore artifacts:
+# Ignore artifacts:
 build
 dist
 
@@ -7,4 +7,3 @@ node_modules
 
 # Ignore environment variables
 .env
-`

@@ -1,85 +1,85 @@
-import { execSync } from 'child_process'
-import fs from 'fs'
-import { setupDocker, setupHusky, setupPrettier } from './Dependencies/index.js'
+import {
+  setupChai,
+  setupCors,
+  setupDocker,
+  setupDotenv,
+  setupEditorconfig,
+  setupESLint,
+  setupExpress,
+  setupFastify,
+  setupGit,
+  setupHelmet,
+  setupHusky,
+  setupJest,
+  setupMocha,
+  setupMorgan,
+  setupNest,
+  setupNodemon,
+  setupPrettier,
+  setupSupertest,
+  setupTypeScript,
+} from './Dependencies/index.js'
 
 export function installDependencies(answers, projectPath) {
-	execSync('npm install dotenv nodemon', {
-		stdio: 'inherit',
-		cwd: projectPath,
-	})
-	console.log('Installed dotenv and nodemon.')
+  setupESLint(projectPath)
+  setupPrettier(projectPath)
+  setupNodemon(projectPath)
+  setupDotenv(projectPath)
+  setupGit(projectPath)
+  setupEditorconfig(projectPath)
 
-	if (answers.useTypeScript === 'Yes') {
-		execSync('npm install typescript @types/node --save-dev', {
-			stdio: 'inherit',
-			cwd: projectPath,
-		})
-		console.log('Installed TypeScript and type definitions.')
-	}
+  if (answers.useTypeScript === 'Yes') {
+    setupTypeScript(projectPath)
+  }
 
-	if (answers.useESLint === 'Yes') {
-		execSync('npm install eslint --save-dev', {
-			stdio: 'inherit',
-			cwd: projectPath,
-		})
-		console.log('Installed ESLint.')
-	}
+  if (answers.useHusky === 'Yes') {
+    setupHusky(projectPath)
+  }
 
-	if (answers.usePrettier === 'Yes') {
-		setupPrettier(projectPath)
-	}
+  if (answers.useDocker === 'Yes') {
+    setupDocker(projectPath)
+  }
 
-	if (answers.useHusky === 'Yes') {
-		setupHusky(projectPath)
-	}
+  switch (answers.backendFramework) {
+    case 'Express':
+      setupExpress(projectPath)
+      break
+    case 'NestJS':
+      setupNest(projectPath)
+      break
+    case 'Fastify':
+      setupFastify(projectPath)
+      break
+  }
 
-	if (answers.useDocker === 'Yes') {
-		setupDocker(projectPath)
-	}
+  if (answers.useMorgan === 'Yes') {
+    setupMorgan(projectPath)
+  }
 
-	switch (answers.backendFramework) {
-		case 'Express':
-			execSync('npm install express', { stdio: 'inherit', cwd: projectPath })
-			console.log('Installed Express.')
-			break
-		case 'NestJS':
-			execSync('npm install @nestjs/core @nestjs/common', {
-				stdio: 'inherit',
-				cwd: projectPath,
-			})
-			console.log('Installed NestJS.')
-			break
-		case 'Fastify':
-			execSync('npm install fastify', { stdio: 'inherit', cwd: projectPath })
-			console.log('Installed Fastify.')
-			break
-	}
+  if (answers.useCors === 'Yes') {
+    setupCors(projectPath)
+  }
 
-	if (answers.useMorgan === 'Yes') {
-		execSync('npm install morgan', { stdio: 'inherit', cwd: projectPath })
-		console.log('Installed Morgan.')
-	}
+  if (answers.useHelmet === 'Yes') {
+    setupHelmet(projectPath)
+  }
 
-	if (answers.useCors === 'Yes') {
-		execSync('npm install cors', { stdio: 'inherit', cwd: projectPath })
-		console.log('Installed CORS.')
-	}
-
-	if (answers.useHelmet === 'Yes') {
-		execSync('npm install helmet', { stdio: 'inherit', cwd: projectPath })
-		console.log('Installed Helmet.')
-	}
-
-	if (answers.useTestingLibraries && answers.useTestingLibraries.length > 0) {
-		const testingLibraries = answers.useTestingLibraries.join(' ')
-		execSync(`npm install ${testingLibraries} --save-dev`, {
-			stdio: 'inherit',
-			cwd: projectPath,
-		})
-		console.log(`Installed testing libraries: ${testingLibraries}.`)
-	}
-
-	const envContent = `# Environment variables\n`
-	fs.writeFileSync(`${projectPath}/.env`, envContent)
-	console.log('.env file created successfully.')
+  if (answers.useTestingLibraries && answers.useTestingLibraries.length > 0) {
+    answers.useTestingLibraries.forEach((library) => {
+      switch (library) {
+        case 'Jest':
+          setupJest(projectPath)
+          break
+        case 'Mocha':
+          setupMocha(projectPath)
+          break
+        case 'Chai':
+          setupChai(projectPath)
+          break
+        case 'Supertest':
+          setupSupertest(projectPath)
+          break
+      }
+    })
+  }
 }

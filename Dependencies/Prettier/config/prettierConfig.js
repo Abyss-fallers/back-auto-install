@@ -1,0 +1,8 @@
+export const prettierConfig = {
+  tabWidth: 2,
+  useTabs: false,
+  semi: false,
+  singleQuote: true,
+  bracketSpacing: true,
+  endOfLine: 'lf',
+}

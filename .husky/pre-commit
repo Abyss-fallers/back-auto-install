@@ -1,0 +1,9 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx lint-staged
+
+if [ $? -ne 0 ]; then
+  echo "Проверки не прошли. Коммит отменен."
+  exit 1
+fi

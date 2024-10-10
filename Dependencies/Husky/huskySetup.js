@@ -1,26 +1,42 @@
 import { execSync } from 'child_process'
 import fs from 'fs'
 
-import { huskyPreCommitContent } from './config/huskyConfig.js'
+import { huskyCommitMsgContent } from './config/commitMsg.js'
+import { huskyPreCommitContent } from './config/preCommitFile.js'
+import { huskyPrePushContent } from './config/prePushFile.js'
 
 export function setupHusky(projectPath) {
-	execSync('npm install husky --save-dev', {
-		stdio: 'inherit',
-		cwd: projectPath,
-	})
-	console.log('Installed Husky.')
+  execSync(
+    'npm install husky @commitlint/{cli,config-conventional} --save-dev',
+    {
+      stdio: 'inherit',
+      cwd: projectPath,
+    },
+  )
+  console.log('Installed Husky.')
 
-	execSync('npx husky install', {
-		stdio: 'inherit',
-		cwd: projectPath,
-	})
+  execSync('npx husky install', {
+    stdio: 'inherit',
+    cwd: projectPath,
+  })
 
-	if (!fs.existsSync(`${projectPath}/.husky`)) {
-		fs.mkdirSync(`${projectPath}/.husky`, { recursive: true })
-	}
+  fs.mkdirSync(`${projectPath}/.husky`, { recursive: true })
 
-	fs.writeFileSync(`${projectPath}/.husky/pre-commit`, huskyPreCommitContent, {
-		mode: 0o755,
-	})
-	console.log('Husky pre-commit hook set up.')
+  fs.writeFileSync(`${projectPath}/.husky/pre-commit`, huskyPreCommitContent, {
+    mode: 0o755,
+  })
+  fs.writeFileSync(`${projectPath}/.husky/commit-msg`, huskyCommitMsgContent, {
+    mode: 0o755,
+  })
+  fs.writeFileSync(`${projectPath}/.husky/pre-push`, huskyPrePushContent, {
+    mode: 0o755,
+  })
+
+  fs.writeFileSync(
+    `${projectPath}/commitlint.config.js`,
+    `module.exports = {
+  extends: ['@commitlint/config-conventional'],
+};`,
+  )
+  console.log('Husky pre-commit, pre-push, commit-msg hooks set up.')
 }
